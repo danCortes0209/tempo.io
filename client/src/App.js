@@ -28,7 +28,10 @@ function App() {
                 min="40"
                 max="250"
                 step="1"
-                onChange={e => setSpeed(e.target.value)}
+                onChange={e => {
+                    setSpeed(e.target.value);
+                    handlePlaying(pulso, e.target.value, playing);
+                }}
             />
             <button onClick={() => handlePlaying(pulso, speed, playing)}>
                 {!playing ? "Play" : "Stop"}
