@@ -9,14 +9,40 @@ function App() {
     const [beat, setBeat] = useState();
 
     const handlePlaying = (golpe, velocidad, tocar) => {
-        console.log(`current speed: ${velocidad}`, `is playing: ${tocar?true:false}`, `beat interval id: ${beat}`);
-        
+        //sending current data to console
+        console.log(
+            `current speed: ${velocidad}`,
+            `is playing: ${tocar ? true : false}`,
+            `beat interval id: ${beat}`
+        );
+
+        //if playing is not true, set it as 1 and start an interval with the new speed
         if (!tocar) {
             setPlaying(1);
             setBeat(setInterval(() => golpe.play(), 60000 / velocidad));
-        } else {
-            setPlaying(0); 
+        } else { //if playing is true/1, set it as false and clear the interval
+            setPlaying(0);
             setBeat(clearInterval(beat));
+        }
+    };
+
+    const handleChangeSpeed = (currentSpeed, currentlyPlaying) => {
+        
+
+        //sending current data to console
+        console.log(
+            "stopped interval playing",
+            `current speed: ${currentSpeed}`,
+            `is playing: ${currentlyPlaying ? true : false}`
+        );
+
+        //if it was playing, send the method as if it wasnt with a new interval and new speed. 
+        if (currentlyPlaying) {
+            //stop current interval
+            setBeat(clearInterval(beat));
+            handlePlaying(pulso, currentSpeed, 0);
+        } else {
+            handlePlaying(pulso, currentSpeed, 1);
         }
     };
 
@@ -32,7 +58,7 @@ function App() {
                 value={speed}
                 onChange={e => {
                     setSpeed(e.target.value);
-                    handlePlaying(pulso, e.target.value, 1);
+                    handleChangeSpeed(e.target.value, playing);
                 }}
             />
             <button onClick={() => handlePlaying(pulso, speed, playing)}>
